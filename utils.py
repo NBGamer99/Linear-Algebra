@@ -2,6 +2,7 @@ import numpy as np
 import sys
  
 I = np.identity(4)
+# w = list()
 
 #Takes a np.Matrix and prints a prettier presentation of the Matrix
 def matprint(mat, fmt="g"):
@@ -14,7 +15,7 @@ def matprint(mat, fmt="g"):
     print("-"*100)
 
 def GaussSeidel(A,b):
-    # w = list()
+    w = list()
     Aug_A = np.column_stack((A,b))
     n = np.shape(A)[0]
     x = np.array([np.zeros(n)],float).T
@@ -28,9 +29,11 @@ def GaussSeidel(A,b):
             
             for k in range(n+1):
                 Aug_A[j][k] = Aug_A[j][k] - ratio * Aug_A[i][k]
-                # w.append(L[j][i] = - ratio) 
             print(f"l{j} -> l{j} - {ratio} * l{i}")
             matprint(Aug_A)
+            L = np.identity(4)
+            L[j][i] = - ratio
+            w.append(L) 
             
     x[n-1] = Aug_A[n-1][n]/Aug_A[n-1][n-1]
     
@@ -41,9 +44,11 @@ def GaussSeidel(A,b):
             x[i] = x[i] - Aug_A[i][j]*x[j]
 
         x[i] = x[i]/Aug_A[i][i]
-    
-    # U = np.dot(A,L.T)
-    return x
+
+    L = np.linalg.multi_dot([w[5],w[4],w[3],w[2],w[1],w[0]])
+    L = np.linalg.inv(L)
+    U = np.linalg.multi_dot([w[5],w[4],w[3],w[2],w[1],w[0],A])
+    return x,w,L,U
 
 
     
@@ -99,16 +104,29 @@ if __name__ == '__main__':
     matprint(b)
     print("La matrice augmente est :")
     matprint(Aug_A_b)
-    x1,L1,U1 = GaussSeidel(A,b)
+    x1,w,L,U= GaussSeidel(A,b)
     print("La solution par methode de Gauss")
     matprint(x1.T)
-    print("La solution L1 ")
-    matprint(L1)
-    print("La solution U1")
-    matprint(U1)
-    print("solution LU :")
-    x2 = solver(L1,U1,b)
+    for i in range(6):
+        print(f"la matrice w[{i}]")
+        matprint(w[i])
+    print("La decomposition U methode de Gauss")
+    matprint(U)
+    print("La decomposition L methode de Gauss")
+    matprint(L)   
+    print("solution LU de methode de Gauss")
+    x2 = solver(L,U,b)
     matprint(x2)
+    
+    
+    
+    # print("La solution L1 ")
+    # matprint(L1)
+    # print("La solution U1")
+    # # matprint(U1)
+    # print("solution LU :")
+    # x2 = solver(L1,U1,b)
+    # matprint(x2)
     
     # L = cholesky(A)
     # matprint(L)
