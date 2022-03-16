@@ -14,6 +14,9 @@ def matprint(mat, fmt="g"):
         print("")
     print("-"*100)
 
+    
+#Our main function of Guass methode
+
 def GaussSeidel(A,b):
     w = list()
     Aug_A = np.column_stack((A,b))
@@ -51,7 +54,7 @@ def GaussSeidel(A,b):
     return x,w,L,U
 
 
-    
+   
 def cholesky(A):
     L = np.zeros_like(A, float)
     n = len(L)
@@ -67,6 +70,8 @@ def cholesky(A):
                 L[i,j] = (A[i,j] - np.sum(L[i,:j]*L[j,:j]))/L[j,j]
                 
     return L
+   
+   
    
 def solver(L,U,b):
   L=np.array(L, float)
@@ -92,84 +97,3 @@ def solver(L,U,b):
     x[i]=(y[i]-sumj)/U[i,i]
   
   return np.array([x])
-
-
-if __name__ == '__main__':
-    A = np.array([[4, 4, 2, 0], [4, 5, 0, 0], [2, 0, 6, 1], [0, 0, 1, 2]], dtype='f')
-    b = np.array([[1,2,3,4]],dtype='f').T
-    Aug_A_b = np.column_stack((A,b))
-    print("La matrice A :")
-    matprint(A)
-    print("La matrice b")
-    matprint(b)
-    print("La matrice augmente est :")
-    matprint(Aug_A_b)
-    x1,w,L,U= GaussSeidel(A,b)
-    print("La solution par methode de Gauss")
-    matprint(x1.T)
-    for i in range(6):
-        print(f"la matrice w[{i}]")
-        matprint(w[i])
-    print("La decomposition U methode de Gauss")
-    matprint(U)
-    print("La decomposition L methode de Gauss")
-    matprint(L)   
-    print("solution LU de methode de Gauss")
-    x2 = solver(L,U,b)
-    matprint(x2)
-    
-    
-    
-    # print("La solution L1 ")
-    # matprint(L1)
-    # print("La solution U1")
-    # # matprint(U1)
-    # print("solution LU :")
-    # x2 = solver(L1,U1,b)
-    # matprint(x2)
-    
-    # L = cholesky(A)
-    # matprint(L)
-    # U = np.transpose(L)
-    # matprint(U)
-    # print("La solution par methode de Cholesky")
-    # x2 = solver(L, U, b)
-    # matprint(x2)
-    # print(x2)
-    # matprint(inv_w)
-    # print("Le produit de A*b")
-    # prd = np.dot(A,b)
-    # matprint(prd)
-    # print("-"*100,"\nLa matrice lower A :\n","-"*100)
-    # L = np.tril(A)
-    # matprint(L)
-    # print("-"*100,"\nLa matrice upper A :\n","-"*100)
-    # U = np.triu(A)
-    # matprint(U)
-    # print("-"*100,"\nLa matrice diag A :\n","-"*100)
-    # diag = np.diag(np.diag(A))
-    # # matprint(diag)
-
-
-    # print("-"*100,"\nLes sous matrice A :\n","-"*100)
-    # a1 = A[0:1,0:1]
-    # matprint(a1)
-    # print(f"sont det(a1) = {np.linalg.det(a1):0.4}")
-    # print("-"*100,"\nLes sous matrice A :\n","-"*100)
-    # a2 = A[0:2,0:2]
-    # matprint(a2)
-    # print(f"sont det(a22) = {np.linalg.det(a2):0.4} ")
-    # print("-"*100,"\nLes sous matrice A :\n","-"*100)
-    # a3 = A[0:3,0:3]
-    # matprint(a3)
-    # print(f"sont det(a3) = {np.linalg.det(a3):0.4} ")
-    # print("-"*100,"\nLes sous matrice A :\n","-"*100)
-    # a4 = A[0:4,0:4]
-    # matprint(a4)
-    # print(f"sont det(a4) = {np.linalg.det(a4):0.4} ")
-    # print("-"*100,"\nLa matrice B\n","-"*100)
-    # n = 3
-    # b = np.zeros((n,n+1))
-    # matprint(b)
-
-
